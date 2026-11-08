@@ -10,6 +10,11 @@ and it takes a few minutes.
 
 ## One-time setup
 
+Without the setup below, the Release workflow still publishes, but **unsigned**: ad-hoc signed, not
+notarized, with notes that tell people how to open it (System Settings → Open Anyway). Once the
+secrets exist, the next tag is signed and notarized automatically, and installed unsigned copies
+update to it on their own. (The reverse is refused: a signed install never accepts an unsigned update.)
+
 You need an Apple Developer Program membership. These steps run on a Mac signed in to that account.
 
 ### 1. Developer ID certificate

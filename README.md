@@ -39,7 +39,7 @@ Claude Code does the reading and writing, on a schedule, using the connectors yo
 2. Open it and drag `MeatDeck (Alpha).app` onto `Applications`.
 3. Open the app from `/Applications`.
 
-Releases are signed and notarized by Apple, so the app opens normally.
+Early releases aren't notarized by Apple yet, so macOS blocks the first launch: click **Done**, then **System Settings → Privacy & Security → Open Anyway**. You only do this once; updates install from inside the app.
 
 First launch turns on _Open at login_ (it starts in the background, so the morning brief is ready before you open it), registers the `meatdeck` MCP server with Claude Code, and installs the `/today` skill.
 

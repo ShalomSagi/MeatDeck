@@ -39,7 +39,16 @@ jobs:
 
       - run: pnpm check
 
+      # Signed and notarized when the signing secrets exist (RELEASING.md); otherwise an unsigned
+      # stopgap release whose notes tell people how to open it.
+      - name: Signing mode
+        env:
+          HAS_CERT: ${{ secrets.MAC_CERT_P12_BASE64 != '' }}
+        run: |
+          if [ "$HAS_CERT" = "true" ]; then echo "SIGNED=1" >> "$GITHUB_ENV"; else echo "::warning::No signing secrets: publishing an unsigned build."; fi
+
       - name: Notarization key
+        if: env.SIGNED == '1'
         env:
           APPLE_API_KEY_P8: ${{ secrets.APPLE_API_KEY_P8 }}
         run: |
@@ -48,6 +57,7 @@ jobs:
           echo "APPLE_API_KEY=$RUNNER_TEMP/keys/AuthKey.p8" >> "$GITHUB_ENV"
 
       - name: Build, sign, notarize, publish
+        if: env.SIGNED == '1'
         env:
           CSC_LINK: ${{ secrets.MAC_CERT_P12_BASE64 }}
           CSC_KEY_PASSWORD: ${{ secrets.MAC_CERT_PASSWORD }}
@@ -55,3 +65,9 @@ jobs:
           APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
           GH_TOKEN: ${{ github.token }}
         run: ./scripts/release.sh --publish
+
+      - name: Build and publish (unsigned)
+        if: env.SIGNED != '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./scripts/release.sh --publish --unsigned

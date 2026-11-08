@@ -7,7 +7,9 @@
 #
 #   scripts/release.sh                 build, sign, notarize; print what would be published
 #   scripts/release.sh --publish       ...and create the GitHub release (needs `gh` logged in, or GH_TOKEN)
-#   scripts/release.sh --unsigned      skip signing and notarization (local dry run; never publish these)
+#   scripts/release.sh --unsigned      ad-hoc signed, not notarized: a local dry run, or with --publish a
+#                                      stopgap release before Developer ID signing is set up (macOS asks
+#                                      people to allow it in System Settings; the notes explain how)
 #
 # Release notes: RELEASE_NOTES.md if present (or NOTES_FILE=path), else a one-line default.
 set -euo pipefail
@@ -23,10 +25,6 @@ for arg in "$@"; do
     *) echo "unknown option: $arg" >&2; exit 2 ;;
   esac
 done
-if (( PUBLISH && UNSIGNED )); then
-  echo "Refusing to publish an unsigned build: users would get macOS's malware warning." >&2
-  exit 2
-fi
 
 VERSION=$(node -p "require('./package.json').version")
 REPO=$(node -p "require('./package.json').meatdeck.updates.github")
@@ -83,6 +81,15 @@ fi
 
 NOTES_FILE="${NOTES_FILE:-RELEASE_NOTES.md}"
 if [[ -f "$NOTES_FILE" ]]; then NOTES=$(cat "$NOTES_FILE"); else NOTES="MeatDeck $VERSION"; fi
+if (( UNSIGNED )); then
+  NOTES="$NOTES
+
+> [!WARNING]
+> This build isn't signed or notarized by Apple yet, so macOS blocks it the first time.
+> Open the dmg, drag the app to Applications and open it once. When macOS says it can't verify
+> the app, click **Done**, then go to **System Settings → Privacy & Security** and click
+> **Open Anyway** next to MeatDeck. You only do this once; later updates install from inside the app."
+fi
 SHA=$(shasum -a 256 "$ZIP" | cut -d' ' -f1)
 SIZE=$(stat -f%z "$ZIP")
 NAME=$(basename "$ZIP")
