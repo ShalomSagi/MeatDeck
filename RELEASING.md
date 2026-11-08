@@ -53,8 +53,12 @@ Never commit any of these. `.gitignore` already excludes `*.p12`, `*.p8` and sim
    ```
 
 4. The **Release** workflow (`.github/workflows/release.yml`) checks the tag matches `package.json`,
-   builds, signs, notarizes, checks the result with Gatekeeper, and publishes
-   `MeatDeck-<version>-mac-arm64.zip` plus `latest.json` (version, notes, the zip's SHA-256 and size).
+   builds, signs, notarizes, checks the result with Gatekeeper, and publishes:
+   - `MeatDeck-mac-arm64.dmg`: what people download to install. It has no version in its name, so
+     `https://github.com/ShalomSagi/MeatDeck/releases/latest/download/MeatDeck-mac-arm64.dmg` always
+     points at the newest one. The dmg is signed, notarized and stapled on its own, not just the app inside.
+   - `MeatDeck-<version>-mac-arm64.zip` and `latest.json` (version, notes, the zip's SHA-256 and
+     size): what installed copies download to update themselves.
 
 Don't mark releases as pre-releases: the app reads GitHub's "latest release", which skips them.
 

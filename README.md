@@ -35,9 +35,9 @@ Claude Code does the reading and writing, on a schedule, using the connectors yo
 
 ## Install
 
-1. Download the latest `.zip` from [GitHub Releases](https://github.com/ShalomSagi/MeatDeck/releases).
-2. Unzip it and move `MeatDeck (Alpha).app` to `/Applications`.
-3. Open it.
+1. Download [`MeatDeck-mac-arm64.dmg`](https://github.com/ShalomSagi/MeatDeck/releases/latest/download/MeatDeck-mac-arm64.dmg) from the [latest release](https://github.com/ShalomSagi/MeatDeck/releases/latest).
+2. Open it and drag `MeatDeck (Alpha).app` onto `Applications`.
+3. Open the app from `/Applications`.
 
 Releases are signed and notarized by Apple, so the app opens normally.
 
