@@ -239,7 +239,7 @@
 }
 .note-editor ul[data-type="taskList"] li > label {
   flex: none;
-  margin-top: 0.38em;
+  margin-top: 0.32em;
   user-select: none;
 }
 .note-editor ul[data-type="taskList"] li > div {
@@ -255,10 +255,11 @@
   appearance: none;
   display: grid;
   place-content: center;
-  width: 1rem;
-  height: 1rem;
-  border: 1px solid var(--input);
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 1.5px solid color-mix(in srgb, var(--foreground) 55%, transparent);
   border-radius: 4px;
+  background: color-mix(in srgb, var(--foreground) 6%, transparent);
   cursor: pointer;
   transition:
     background-color 0.15s,
@@ -266,6 +267,7 @@
 }
 .note-editor ul[data-type="taskList"] input[type="checkbox"]:hover {
   border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
 }
 .note-editor ul[data-type="taskList"] input[type="checkbox"]:checked {
   background: var(--success);
